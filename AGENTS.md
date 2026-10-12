@@ -404,7 +404,7 @@ Barrier Ticket Received: "Search form inaccessible to keyboard users"
 - **Primary Framework**: AI Accessibility Maturity Model (Double FW Ltd.)
 - **Standards**: WCAG 2.2 Level A & AA; EAA Annex I Functional Performance Criteria
 - **Automation Baseline**: axe-core 4.13 (pinned version, rules configured per organizational policy)
-- **Research & Outcomes**: Ab11y ASK survey (six dimensions: navigation, task completion, task time, confidence, effort, assistance)
+- **Research & Outcomes**: Accessiblethinking.com ASK AI survey (six dimensions: navigation, task completion, task time, confidence, effort, assistance)
 - **Governance**: Embedded operating model with distributed RACI roles, no dedicated accessibility audit, champions network for operational influence
 - **Evidence Streams**: Conformance (requirements + tests), Verification results (automated + manual), Inclusive outcomes (user/employee research)
 
