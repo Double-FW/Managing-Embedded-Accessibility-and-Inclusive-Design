@@ -166,7 +166,7 @@ Before closure, require technical verification and the planned outcome check. If
 
 ## Continuous research and design optimisation
 
-Ab11y ASK or a comparable accessible survey can provide recurring experience signals alongside technical tests. The supplied ASK overview describes six aspects: navigation, task completion, task time, content consumption, predictability and support for user preferences. It describes segmented, aggregated CSV results and survey setup through a unique URL or API key. \[5\]
+ASK AI by Accessiblethinking.com or a comparable accessible survey can provide recurring experience signals alongside technical tests. The supplied ASK overview describes six aspects: navigation, task completion, task time, content consumption, predictability and support for user preferences. It describes segmented, aggregated CSV results and survey setup through a unique URL or API key. \[5\]
 
 Use EAA Annex I functional performance criteria as a lens for coverage and research questions. This is a proposed research application; a survey score is not an EAA conformity determination. Check needs beyond the survey's implemented segments, including vocal input, reach, photosensitivity and privacy. A comparison group reporting no particular need is not the randomised control arm of an experiment. \[4–5\]
 
@@ -263,7 +263,7 @@ Pin the actual 4.13.x package version used and retain the configured rule invent
 
 Explains EAA Annex I, Section VII and its conditions of application. Research segmentation is a useful operational interpretation, not a replacement for determining applicable legal requirements. Privacy applies across accessible modes of use and should not be treated as a participant category.
 
-\[5\] Ab11y. Supplied ASK Overview, ASK Survey Instructions, and ASK and the EAA materials, reviewed 11 October 2026.
+\[5\] Accessiblethinking.com Supplied ASK AI Overview, ASK AI Survey Instructions, and ASK AI and the EAA materials, reviewed 11 October 2026.
 
 The overview describes the six experience measures, segmentation, CSV delivery and URL/API-key setup. The instructions describe study operation and aggregation. The integration must resolve documented differences in scales and groupings before automated comparisons. No claim of universal survey accessibility, guaranteed anonymity, statistical significance or legal conformity is inferred from these materials.
 
