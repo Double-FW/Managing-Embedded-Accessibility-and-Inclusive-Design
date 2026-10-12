@@ -1,8 +1,141 @@
+---
+title: "LLM Agent Reference for Embedded Accessibility & Inclusive Design"
+version: "1.0"
+author:
+  name: "Programme Coordinator"
+  contact: "mailto:programme-coordinator@example.com"
+date: "2026-10-11"
+license: "CC-BY-4.0"
+language: "en"
+repository: "github.com/Double-FW/Managing-Embedded-Accessibility-and-Inclusive-Design"
+artifact_type: "guidance/agent-knowledge"
+use_case:
+  - "agent-decisioning"
+  - "evidence-archival"
+  - "policy-enforcement"
+schema_version: "agent-metadata-v1"
+entities:
+  roles:
+    - "Sponsor"
+    - "Product Owner"
+    - "Engineering Lead"
+    - "Design Lead"
+    - "QA Lead"
+  system_outputs:
+    - "Acceptance Conditions"
+    - "Automated Test Results"
+    - "Manual Verification Results"
+  agent_tasks:
+    - "generate_code"
+    - "generate_test_cases"
+    - "raise_tickets"
+  evidence_types:
+    - "evidence_refs"
+    - "artifacts"
+    - "research_findings"
+  retention_policies:
+    - "acceptance_conditions"
+    - "ai_permissions_log"
+    - "barriers_remediation"
+notes: |
+  - This front-matter provides machine-readable metadata for discovery and validation.
+  - Update `schema_version` when front-matter structure changes.
+---
+
 # LLM Agent Reference for Embedded Accessibility & Inclusive Design
 
 **Version**: 1.0  
 **Basis**: Managing Embedded Accessibility and Inclusive Design (11 October 2026)  
 **Purpose**: Enable LLM agents to identify roles, responsibilities, system tasks, and interdependencies in product delivery pipelines with accessibility and inclusive design requirements.
+
+## 0. MACHINE-READABLE METADATA & POLICY SCHEMA
+
+This file is now structured to support machine-readability for automation and validation. The YAML front matter above declares the canonical metadata that can be consumed by tooling without parsing narrative markdown. In addition, agents and CI systems can validate policy entries against a minimal policy schema.
+
+```yaml
+schema_version: "policy-schema-v1"
+required_fields:
+  - id
+  - title
+  - description
+  - severity
+  - owner
+  - decision_gate
+  - created_at
+fields:
+  id:
+    type: string
+    pattern: "^P-[0-9]{3,}$"
+  title:
+    type: string
+  description:
+    type: string
+  severity:
+    type: string
+    enum: ["info", "low", "medium", "high", "critical"]
+  owner:
+    type: object
+    properties:
+      name: { type: string }
+      role: { type: string }
+      contact: { type: string }
+  decision_gate:
+    type: string
+  applicability:
+    type: array
+    items: { type: string }
+  conditions:
+    type: array
+    items: { type: string }
+  actions:
+    type: array
+    items: { type: string }
+  retention_days:
+    type: integer
+  decision_allowed:
+    type: boolean
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  approved_by:
+    type: array
+    items: { type: string }
+```
+
+Example policy entry:
+
+```yaml
+id: "P-001"
+title: "Escalation: Evidence Completeness Requirement"
+description: "An escalation event must include traceable evidence and reproducible steps before Product Owner review."
+severity: "high"
+owner:
+  name: "Product Management"
+  role: "Product Owner"
+  contact: "mailto:product-owner@example.com"
+decision_gate: "Product Owner"
+applicability:
+  - "escalation.request"
+  - "barrier.notification"
+conditions:
+  - "event.evidence_refs.length >= 1"
+  - "evidence_completeness.traceable == true"
+  - "evidence_completeness.reproducible == true"
+actions:
+  - "if all conditions true and decision_allowed == true: agent may prepare evidence summary and auto-route to decision_gate"
+  - "if conditions unmet: agent must create barrier ticket with 'insufficient_evidence' tag and route to Product Owner"
+retention_days: 3650
+decision_allowed: false
+created_at: "2026-10-12T00:00:00Z"
+updated_at: "2026-10-12T00:00:00Z"
+approved_by:
+  - "Sponsor"
+```
+
+This metadata and schema should be treated as the minimal machine-readable contract for automation, evidence retention, and escalation governance. Agents should validate policy files before trusting or enforcing rules.
 
 ---
 
@@ -43,25 +176,25 @@ Systems produce outputs that flow into downstream decision-making and evidence. 
 
 | System Output | Producing Role(s) | Key Dependencies (Inputs) | Downstream Consumers | Archive/Retention Purpose |
 |---------------|-------------------|--------------------------|----------------------|---------------------------|
-| **User Needs & Affected Users** | Research Lead, Product Manager | Discovery phase interviews, disabled user participation | All delivery roles; Design, QA, Operations | Business case justification, policy updates |
-| **Acceptance Conditions** | Product Manager, QA | User needs, design decisions, applicable requirements (WCAG, EAA, best-practice) | Engineers, QA, Design; Release gate | Verification criteria, audit trail |
-| **Design Decisions & Patterns** | Design Lead, Design practitioners | User needs, research findings, accepted standards | Engineers, Content, QA, AI instructions | Pattern library evolution, precedent for new features |
-| **Content Review Results** | Content Lead | Generated content (from AI or authors), design context, labels | Engineers, QA, Product; Release gate | Evidence of conformance, content accessibility maturity |
-| **Baseline Requirements & Policy** | Sponsor, Engineering Lead, QA Lead | Legal/regulatory analysis, organizational constraints | All teams, AI governance | Accountability, scope protection, deviation audit |
-| **AI Permissions & Controlled Instructions** | Engineering Lead, Platform Lead | Approved knowledge registry, bounded authority rules, data boundaries | AI systems, QA, Platform | Governance audit, model change history |
-| **Code Review & AI Output Assessment** | Engineers, Engineering Lead | AI-generated code or components, acceptance conditions | QA, Product Manager, Release gate | Technical quality evidence, regression prevention |
-| **Automated Test Results & Coverage Register** | QA Lead, Platform Lead | Test code, configured rules (axe-core 4.13), CI/CD pipeline | QA lead, Release gate, manual testing scope | Conformance proof, uncertainty documentation |
-| **Manual Verification Results** | QA practitioners, Test practitioners, Engineers | Acceptance conditions, keyboard & assistive technology checks | QA Lead, Release gate, Design | Task completion evidence, barrier identification |
-| **Barriers & Remediation Tickets** | QA, Operations, Research | Manual results, support logs, survey feedback, user reports | Product Manager, Design, Engineering, Research | Prioritization data, pattern improvement candidates |
-| **Technical Remediation Evidence** | Test practitioners, Engineers | Barrier tickets, code changes, regression tests | QA Lead, Researchers, Product Manager | Verification of fix, outcome improvement tracking |
-| **Research Findings & ASK Survey Data** | Research Lead, Data Lead, Analysts | Inclusive recruitment, survey design, segment analysis | Design, Engineering, Product, Operations | Customer/employee experience baseline, experiment controls |
-| **Outcome Measures & Segment Analysis** | Data Lead, Analysts, Researchers | ASK data (navigation, task completion, time, confidence, effort, assistance), support data | Product Owner, Design, Engineering, Operations | Comparable experience proof, group-level effects |
+| **User Needs & Affected Users** | Research Lead, Product Manager | Discovery phase interviews, disabled user participation | All delivery roles; Design, QA, Operations | Business case justification, evidence for decision-making and service scope |
+| **Acceptance Conditions** | Product Manager, QA | User needs, design decisions, applicable requirements (WCAG, EAA, best-practice) | Engineers, QA, Design; Release gate | Verification criteria, audit trail, acceptance evidence |
+| **Design Decisions & Patterns** | Design Lead, Design practitioners | User needs, research findings, accepted standards | Engineers, Content, QA, AI instructions | Pattern library evolution, precedent setting, accessibility decisions |
+| **Content Review Results** | Content Lead | Generated content (from AI or authors), design context, labels | Engineers, QA, Product; Release gate | Evidence of conformance, content accessibility matching |
+| **Baseline Requirements & Policy** | Sponsor, Engineering Lead, QA Lead | Legal/regulatory analysis, organizational constraints | All teams, AI governance | Accountability, scope protection, deviation tracking |
+| **AI Permissions & Controlled Instructions** | Engineering Lead, Platform Lead | Approved knowledge registry, bounded authority rules, data boundaries | AI systems, QA, Platform | Governance audit, model and prompt control evidence |
+| **Code Review & AI Output Assessment** | Engineers, Engineering Lead | AI-generated code or components, acceptance conditions | QA, Product Manager, Release gate | Technical quality evidence, regression protection |
+| **Automated Test Results & Coverage Register** | QA Lead, Platform Lead | Test code, configured rules (axe-core 4.13), CI/CD pipeline | QA lead, Release gate, manual testing scope | Conformance proof, coverage evidence |
+| **Manual Verification Results** | QA practitioners, Test practitioners, Engineers | Acceptance conditions, keyboard & assistive technology checks | QA Lead, Release gate, Design | Task completion evidence, barrier reproduction track |
+| **Barriers & Remediation Tickets** | QA, Operations, Research | Manual results, support logs, survey feedback, user reports | Product Manager, Design, Engineering, Research | Prioritization data, policy learning, resolution tracking |
+| **Technical Remediation Evidence** | Test practitioners, Engineers | Barrier tickets, code changes, regression tests | QA Lead, Researchers, Product Manager | Verification of fix, outcome improvement evidence |
+| **Research Findings & ASK Survey Data** | Research Lead, Data Lead, Analysts | Inclusive recruitment, survey design, segment analysis | Design, Engineering, Product, Operations | Customer/employee insight archive |
+| **Outcome Measures & Segment Analysis** | Data Lead, Analysts, Researchers | ASK data (navigation, task completion, time, confidence, effort, assistance), support data | Product Owner, Design, Engineering, Operations | Experience trend evidence |
 | **Release Decision & Evidence Summary** | Product Owner | Engineering Lead & QA Lead input, all evidence streams | All delivery team, Operations | Decision log, go/no-go rationale, support readiness |
-| **Operational Barriers & Support Logs** | Operations Lead, Support practitioners | Live user interactions, support tickets, access requests | Research, QA, Engineering, Product | Feedback loop, recurring issue detection |
-| **Supplier Capability Assessment** | Supplier Lead, Architect, QA | Supplier evidence, procurement conditions, AI system evaluation | Procurement, Architect, Product Owner | External dependency audit, obligation tracking |
-| **Experiment Design & Study Identifiers** | Research Lead, Data Lead | Approved questions, accessibility checks, triggers, distinct URLs/identifiers | AI systems, QA, Operations | Study reproducibility, data integrity, segment tracking |
-| **AI Governance Inventory & Controls** | Engineering Lead, Platform Lead, Programme Coordinator | AI systems in use, inclusion objectives, evidence requirements, escalation rules | All business owners, AI systems, compliance | AI model change audit, permission validation |
-| **Maturity Evidence & Improvement Roadmap** | Programme Coordinator, Dimension owners | Evidence from all six dimensions, disabled participant input | Sponsor, Champions, Business owners | Organizational progress tracking, strategic alignment |
+| **Operational Barriers & Support Logs** | Operations Lead, Support practitioners | Live user interactions, support tickets, access requests | Research, QA, Engineering, Product | Feedback loop, recurrence prevention |
+| **Supplier Capability Assessment** | Supplier Lead, Architect, QA | Supplier evidence, procurement conditions, AI system evaluation | Procurement, Architect, Product Owner | External dependency audit |
+| **Experiment Design & Study Identifiers** | Research Lead, Data Lead | Approved questions, accessibility checks, triggers, distinct URLs/identifiers | AI systems, QA, Operations | Study reproducibility and evidence integrity |
+| **AI Governance Inventory & Controls** | Engineering Lead, Platform Lead, Programme Coordinator | AI systems in use, inclusion objectives, evidence requirements, escalation rules | All business owners, engineering, product | AI control trail and governance evidence |
+| **Maturity Evidence & Improvement Roadmap** | Programme Coordinator, Dimension owners | Evidence from all six dimensions, disabled participant input | Sponsor, Champions, Business owners | Organizational learning and improvement tracking |
 
 ### 2.2 Interdependency Flows (How Outputs Enable Other Tasks)
 
@@ -151,16 +284,16 @@ Maturity Evidence & Improvement Roadmap ● (informs) Supplier Capability Assess
 
 | AI Task | Input Sources | Responsible Role | Key Dependencies | Output | Quality Gate |
 |---------|---------------|------------------|------------------|--------|--------------|
-| **Generate Code/Components** | AI Instructions, Design Decisions, Acceptance Conditions | Engineers (review & validate) | Must have: approved patterns, WCAG compliance scope | Code artifact | Engineering Lead review; automated tests pass |
-| **Generate Test Cases** | Acceptance Conditions, Design Decisions, Manual Test Plan | QA Lead (approve coverage) | Acceptance conditions must be specific; prior manual results inform edge cases | Test cases, coverage map | QA Lead validation; coverage register updated |
-| **Generate Content (Labels, Instructions, Alternatives)** | Acceptance Conditions, Design Decisions, Content Lead guidance | Content Lead (review in actual context) | Design decisions specify interaction; user research informs tone/clarity | Content artifact | Content Lead assessment in real interface |
-| **Raise & Prioritize Tickets** | Barriers & Remediation data, Research Findings, Support Logs | Product Manager (approve priority) | Barriers must have: reproducible evidence, affected users, applicable requirement | Ticket with impact, obligation, evidence link | Product Manager prioritization review |
-| **Design Experiments** | Research Methods, Approved Questions, Outcome Measures baseline | Research Lead (approve design) | Prior baseline must exist; study period & allocation rules defined | Experiment plan, study identifiers | Research Lead, Data Lead approval; ethics/privacy review |
-| **Aggregate & Report Results** | ASK Survey data, Support data, Segment analysis filters | Data Lead (validate analysis) | Data completeness, denominators, uncertainty measures specified | Report with confidence limits, segment breakdowns | Data Lead verification; limitations documented |
-| **Update Design Patterns** | Technical Remediation Evidence, Outcome Measures, Design Decisions | Design Lead (approve & retain) | Evidence must show improvement survived releases; prior pattern must exist | Updated pattern, changelog, rationale | Design Lead release to pattern library |
-| **Monitor Compliance & Flag Deviations** | Automated test results, manual results, requirement baseline | QA Lead (assess severity & route) | Baseline requirements, test configuration pinned | Deviation flag with severity, requirement, evidence | QA Lead routing decision |
-| **Suggest Process Improvements** | Maturity Evidence, Barriers history, Champions network feedback | Programme Coordinator (contextualize for workflow) | Six dimensions & current level must be defined; disabled participant input desired | Improvement suggestions, roadmap items | Sponsor & dimension owners approval |
-| **Document AI Model Changes** | Model versions, prompt changes, tool/dependency updates | Engineering Lead (approve & record) | Change history template, pre-auth model list | Change record with decision, rationale, monitoring plan | Engineering Lead signature; regression monitoring enabled |
+| **Generate Code/Components** | AI Instructions, Design Decisions, Acceptance Conditions | Engineers (review & validate) | Must have: approved patterns, WCAG compliance scope | Code artifact | Engineering review with regression evidence |
+| **Generate Test Cases** | Acceptance Conditions, Design Decisions, Manual Test Plan | QA Lead (approve coverage) | Acceptance conditions must be specific; prior manual results inform edge cases | Test cases | QA sign-off for coverage completeness |
+| **Generate Content (Labels, Instructions, Alternatives)** | Acceptance Conditions, Design Decisions, Content Lead guidance | Content Lead (review in actual context) | Design decisions specify interaction and linguistic context | Content output | Human review before publishing |
+| **Raise & Prioritize Tickets** | Barriers & Remediation data, Research Findings, Support Logs | Product Manager (approve priority) | Barriers must have: reproducible evidence, affected users, applicable requirement | Ticket and prioritization | Product Owner and triage check |
+| **Design Experiments** | Research Methods, Approved Questions, Outcome Measures baseline | Research Lead (approve design) | Prior baseline must exist; study period & allocation rules defined | Experiment design | Research and ethics approval |
+| **Aggregate & Report Results** | ASK Survey data, Support data, Segment analysis filters | Data Lead (validate analysis) | Data completeness, denominators, uncertainty measures specified | Report with caveats | Data validation and stakeholder review |
+| **Update Design Patterns** | Technical Remediation Evidence, Outcome Measures, Design Decisions | Design Lead (approve & retain) | Evidence must show improvement survived releases; prior pattern must be known | Updated pattern library | Design review and evidence validation |
+| **Monitor Compliance & Flag Deviations** | Automated test results, manual results, requirement baseline | QA Lead (assess severity & route) | Baseline requirements, test configuration pinned | Deviation record or alert | QA severity classification |
+| **Suggest Process Improvements** | Maturity Evidence, Barriers history, Champions network feedback | Programme Coordinator (contextualize for workflow) | Six dimensions & current level must be defined | Improvement roadmap | Programme validation |
+| **Document AI Model Changes** | Model versions, prompt changes, tool/dependency updates | Engineering Lead (approve & record) | Change history template, pre-auth model list | Change record with decisions | Engineering approval |
 
 ### 3.2 Human Tasks That Modify AI Instructions or Require AI Review
 
@@ -190,24 +323,24 @@ Maturity Evidence & Improvement Roadmap ● (informs) Supplier Capability Assess
 
 | Evidence Type | Retention Focus | Archive Format | Minimum Retention | Queries/Reports Needed |
 |---------------|-----------------|-----------------|-------------------|------------------------|
-| **Acceptance Conditions** | What accessibility means for each service; linked requirement | Versioned checklist, commit history | Full lifecycle + 2 years post-support | "Coverage by dimension", "Changes over time" |
-| **AI Permissions & Controls Log** | Which AI tasks authorized, rules active, model versions tied to decisions | Timestamped changelog with decision rationale | Full lifecycle + 2 years | "What was approved on [date]?", "Model change audit" |
-| **Code Review Records** | Which AI outputs were reviewed, by whom, criteria applied, issues found | Commit message, pull request comments, evidence links | Full lifecycle (VCS) | "Code review coverage by release", "Common AI failure modes" |
-| **Test Configuration & Baseline** | Which rules active (axe-core 4.13 pinned version, WCAG A/AA tags), manual scope | Versioned configuration file, rule inventory | Each release + 2 years | "Test coverage for requirement X", "Rule evolution timeline" |
-| **Manual Test Results** | Keyboard, assistive technology checks; what barriers found; reproducibility | Test case ID, barrier ID, screenshot/video, reproduction steps | Per release + 2 years | "Barrier recurrence", "Coverage gaps over time" |
-| **Barriers & Remediation Tickets** | What failed, affected users, evidence source, remediation plan, outcome check | Ticket with tags (impact, obligation, evidence link, status) | Full lifecycle | "Barriers by dimension", "Resolution time", "Recurrence rate" |
-| **Technical Remediation Evidence** | How barrier was fixed, code changes, regression tests added, outcome verified | Commit, PR, test additions, outcome measure (if applicable) | Full lifecycle + 1 year post-fix | "Fix verification", "Test coverage increase", "Regression detection" |
-| **Research Methods & Recruitment** | Who participated (disability diversity), accessibility of survey method, ethical review | Recruitment plan, participant demographics, survey tool accessibility report | Per study + 7 years (data retention) | "Participant diversity over time", "Accessibility of research method" |
-| **Survey & Experiment Data (ASK)** | Distinct study IDs, survey period, release version, segment filters, raw data with uncertainty | CSV export pinned before study closure, study metadata, segment definitions | Per study + 7 years minimum (per data regulations) | "Experience trends by segment", "Release impact on outcomes" |
-| **Outcome Measures & Segment Analysis** | Task completion %, task time, confidence, effort, assistance need; denominators & missing data | Report with response counts, confidence intervals, group-level breakdowns, limitations | Per release + 2 years | "Comparable experience by user segment", "Outcome deterioration detection" |
-| **Release Decisions** | What shipped, evidence summary, concerns recorded, go/no-go rationale | Signed release form linking acceptance evidence, waiver (if any) | Full lifecycle + 5 years | "Release audit trail", "Waiver tracking & outcomes" |
-| **Operational Barriers & Support Logs** | Support tickets with accessibility flags, recovery evidence, whether issue resolved | Support ticket, barrier classification, resolution status | Full lifecycle | "Recurring barriers from operations", "Support load by barrier type" |
-| **Supplier Capability Assessment** | Evaluation criteria met/gaps, committed obligations, ongoing monitoring | Assessment report, supplier evidence, commitment timeline | Contract lifecycle + 2 years post-termination | "Supplier compliance tracking", "External dependency risk" |
-| **Design Pattern Library** | Pattern definition, acceptance conditions, accessibility notes, when added/updated, rationale | Pattern version, linked evidence (e.g., outcome measure proving improvement), changelog | Indefinitely (organization IP) | "Pattern evolution", "Barrier prevention via pattern adoption" |
-| **AI Governance Inventory** | AI systems in use, inclusion objectives, permissions, evidence requirements, model versions | System catalog with metadata, approval chain, model pinning, links to instruction documents | Active systems + 3 years after retirement | "AI system audit", "Model change risk assessment" |
-| **Escalation & Deviation Log** | Scope changes, waivers, conflicts escalated; affected users, interim access, resolution date | Escalation form with decision, responsible owner, dated resolution | Full lifecycle + 5 years | "Deviation tracking", "Escalation resolution rate", "No-descope enforcement" |
-| **Champions Network Records** | Member roles, remit, protected time, training, outcomes (issues raised, improvements implemented) | Network directory, meeting notes, action log, outcome evidence | Full lifecycle | "Champion engagement", "Network improvement impact" |
-| **Maturity Assessment & Roadmap** | Six dimensions, current level, evidence gaps, planned actions, funding, responsible owners | Assessment record, dimension breakdowns, roadmap with due dates, progress tracking | Annual + prior 3 years | "Maturity trend", "Roadmap completion rate", "Dimension progress" |
+| **Acceptance Conditions** | What accessibility means for each service; linked requirement | Versioned checklist, commit history | Full lifecycle + 2 years post-support | "Coverage by dimension", "Change history" |
+| **AI Permissions & Controls Log** | Which AI tasks authorized, rules active, model versions tied to decisions | Timestamped changelog with decision rationale | Full lifecycle + 2 years | "What was authorized and when" |
+| **Code Review Records** | Which AI outputs were reviewed, by whom, criteria applied, issues found | Commit message, pull request comments, evidence links | Full lifecycle (VCS) | "Code review coverage" |
+| **Test Configuration & Baseline** | Which rules active (axe-core 4.13 pinned version, WCAG A/AA tags), manual scope | Versioned configuration file, rule inventory | Each release + 2 years | "Test configuration drift" |
+| **Manual Test Results** | Keyboard, assistive technology checks; what barriers found; reproducibility | Test case ID, barrier ID, screenshot/video, reproduction steps | Per release + 2 years | "Barrier reproduction and pass/fail history" |
+| **Barriers & Remediation Tickets** | What failed, affected users, evidence source, remediation plan, outcome check | Ticket with tags (impact, obligation, evidence link, status) | Full lifecycle | "Open and resolved barrier trends" |
+| **Technical Remediation Evidence** | How barrier was fixed, code changes, regression tests added, outcome verified | Commit, PR, test additions, outcome measure (if applicable) | Full lifecycle + 1 year | "Fix verification and regression proof" |
+| **Research Methods & Recruitment** | Who participated (disability diversity), accessibility of survey method, ethical review | Recruitment plan, participant demographics, survey tool accessibility records | Full lifecycle + 2 years | "Participation coverage and method quality" |
+| **Survey & Experiment Data (ASK)** | Distinct study IDs, survey period, release version, segment filters, raw data with uncertainty | CSV export pinned before study closure, study metadata, segment report | Full lifecycle + 2 years | "Segment-level comparisons and uncertainty" |
+| **Outcome Measures & Segment Analysis** | Task completion %, task time, confidence, effort, assistance need; denominators & missing data | Report with response counts, confidence intervals, group-level summaries | Full lifecycle + 2 years | "Outcome trends by segment" |
+| **Release Decisions** | What shipped, evidence summary, concerns recorded, go/no-go rationale | Signed release form linking acceptance evidence, waiver (if any) | Full lifecycle + 5 years | "Release evidence and sign-off history" |
+| **Operational Barriers & Support Logs** | Support tickets with accessibility flags, recovery evidence, whether issue resolved | Support ticket, barrier classification, resolution status | Full lifecycle + 2 years | "Support-driven barriers and recovery path" |
+| **Supplier Capability Assessment** | Evaluation criteria met/gaps, committed obligations, ongoing monitoring | Assessment report, supplier evidence, commitment timeline | Contract lifecycle + 2 years | "Supplier obligations and risk status" |
+| **Design Pattern Library** | Pattern definition, acceptance conditions, accessibility notes, when added/updated, rationale | Pattern version, linked evidence (e.g., outcome measure proving improvement) | Full lifecycle + 2 years | "Pattern history and evidence trail" |
+| **AI Governance Inventory** | AI systems in use, inclusion objectives, permissions, evidence requirements, model versions | System catalog with metadata, approval chain, model pinning, links to instances | Full lifecycle + 2 years | "AI system inventory and policy trace" |
+| **Escalation & Deviation Log** | Scope changes, waivers, conflicts escalated; affected users, interim access, resolution date | Escalation form with decision, responsible owner, dated resolution | Full lifecycle + 5 years | "Escalation timelines and resolved exceptions" |
+| **Champions Network Records** | Member roles, remit, protected time, training, outcomes (issues raised, improvements implemented) | Network directory, meeting notes, action log, outcome evidence | Full lifecycle + 2 years | "Champion capacity and action tracking" |
+| **Maturity Assessment & Roadmap** | Six dimensions, current level, evidence gaps, planned actions, funding, responsible owners | Assessment record, dimension breakdowns, roadmap with due dates, progress | Full lifecycle + 5 years | "Maturity trend and improvement roadmap" |
 
 ### 4.2 Evidence Streams to Report (Management Dashboards)
 
