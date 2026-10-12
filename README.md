@@ -22,7 +22,7 @@ The content is designed for both:
 ## What is in this repository
 
 - `Managing_Embedded_Accessibility_and_Inclusive_Design.md` — the main human-readable framework and guidance document
-- `agent.md` — a dedicated agent reference that explains roles, responsibilities, decision boundaries, evidence requirements, and workflow rules for LLM agents
+- `AGENTS.md` — a dedicated agent reference that explains roles, responsibilities, decision boundaries, evidence requirements, and workflow rules for LLM agents
 - `LICENSE` — repository licensing information
 
 ## Recommended reading order
@@ -35,7 +35,7 @@ The content is designed for both:
 
 ### For AI agents
 
-1. Read `agent.md` first
+1. Read `AGENTS.md` first
 2. Treat it as a decision framework and operating contract
 3. Use the human decision routing rules before changing policy, release status, or governance structures
 
@@ -173,7 +173,7 @@ The guide suggests working at multiple cadences:
 ├── LICENSE
 ├── README.md
 ├── Managing_Embedded_Accessibility_and_Inclusive_Design.md
-├── agent.md
+├── AGENTS.md
 └── .github/ (if added later for workflows or automation)
 ```
 
@@ -227,9 +227,9 @@ This project combines a practical human-facing accessibility framework with an e
 For the full detailed guidance, read:
 
 - `Managing_Embedded_Accessibility_and_Inclusive_Design.md`
-- `agent.md`
+- `AGENTS.md`
 
-For an agent operating in this domain, `agent.md` is the actionable reference and should be treated as the decision and governance companion to the human-readable guide.
+For an agent operating in this domain, `AGENTS.md` is the actionable reference and should be treated as the decision and governance companion to the human-readable guide.
 
 ---
 
