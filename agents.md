@@ -1,4 +1,4 @@
-# agent.me: LLM Agent Reference for Embedded Accessibility & Inclusive Design
+# LLM Agent Reference for Embedded Accessibility & Inclusive Design
 
 **Version**: 1.0  
 **Basis**: Managing Embedded Accessibility and Inclusive Design (11 October 2026)  
