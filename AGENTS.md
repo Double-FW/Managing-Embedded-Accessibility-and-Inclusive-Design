@@ -2,8 +2,7 @@
 title: "LLM Agent Reference for Embedded Accessibility & Inclusive Design"
 version: "1.0"
 author:
-  name: "Programme Coordinator"
-  contact: "mailto:programme-coordinator@example.com"
+  name: "Double-FW, Gareth Ford Williams"
 date: "2026-10-11"
 license: "CC-BY-4.0"
 language: "en"
